@@ -7,9 +7,10 @@ import (
 )
 
 type AppEnvironment struct {
+	Port          string
 	ChannelSecret string
 	ChannelToken  string
-	Port          string
+	NotifyGroupId string
 }
 
 func NewAppEnvironment() (*AppEnvironment, error) {
@@ -31,14 +32,16 @@ func NewAppEnvironment() (*AppEnvironment, error) {
 		return nil, errors.New("PORT を読み込めませんでした")
 	}
 
-	if !isReadChannelSecret {
-		return nil, errors.New("CHANNEL_SECRET を読み込めませんでした")
+	notifyGroupId, isReadNotifyGroupId := os.LookupEnv("NOTIFY_GROUP_ID")
+	if !isReadNotifyGroupId {
+		return nil, errors.New("NOTIFY_GROUP_ID を読み込めませんでした")
 	}
 
 	appEnvironment := &AppEnvironment{
+		Port:          port,
 		ChannelSecret: channelSecret,
 		ChannelToken:  channelToken,
-		Port:          port,
+		NotifyGroupId: notifyGroupId,
 	}
 	return appEnvironment, nil
 }

@@ -19,6 +19,12 @@ func main() {
 		log.Fatal(err)
 	}
 
+	//call := bot.PushMessage(
+	//	appEnv.NotifyGroupId,
+	//	linebot.NewTextMessage("起動した！"),
+	//)
+	//_, _ = call.Do()
+
 	// Setup HTTP Server for receiving requests from LINE platform
 	http.HandleFunc("/callback", func(w http.ResponseWriter, req *http.Request) {
 		events, err := bot.ParseRequest(req)
@@ -32,18 +38,18 @@ func main() {
 		}
 		for _, event := range events {
 			if event.Type == linebot.EventTypeMessage {
-				switch message := event.Message.(type) {
-				case *linebot.TextMessage:
-					if _, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(message.Text)).Do(); err != nil {
-						log.Print(err)
-					}
-				case *linebot.StickerMessage:
-					replyMessage := fmt.Sprintf(
-						"sticker id is %s, stickerResourceType is %s", message.StickerID, message.StickerResourceType)
-					if _, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(replyMessage)).Do(); err != nil {
-						log.Print(err)
-					}
-				}
+				//switch message := event.Message.(type) {
+				//case *linebot.TextMessage:
+				//	if _, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(message.Text)).Do(); err != nil {
+				//		log.Print(err)
+				//	}
+				//case *linebot.StickerMessage:
+				//	replyMessage := fmt.Sprintf(
+				//		"sticker id is %s, stickerResourceType is %s", message.StickerID, message.StickerResourceType)
+				//	if _, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(replyMessage)).Do(); err != nil {
+				//		log.Print(err)
+				//	}
+				//}
 			}
 		}
 	})
@@ -59,5 +65,6 @@ func loadAppEnv() *model.AppEnvironment {
 	if err != nil {
 		panic(fmt.Sprintf("環境変数を読み込めませんでした: %v", err))
 	}
+	log.Printf("環境変数を読み込みました")
 	return appEnv
 }

@@ -2,20 +2,18 @@ package main
 
 import (
 	"fmt"
+	"github.com/line/line-bot-sdk-go/v7/linebot"
+	"github.com/tkchry/nck-trampoline-bot/domain/model"
 	"log"
 	"net/http"
-	"os"
-
-	"github.com/joho/godotenv"
-	"github.com/line/line-bot-sdk-go/v7/linebot"
 )
 
 func main() {
-	loadEnv()
+	appEnv := loadAppEnv()
 
 	bot, err := linebot.New(
-		os.Getenv("CHANNEL_SECRET"),
-		os.Getenv("CHANNEL_TOKEN"),
+		appEnv.ChannelSecret,
+		appEnv.ChannelToken,
 	)
 	if err != nil {
 		log.Fatal(err)
@@ -51,15 +49,15 @@ func main() {
 	})
 	// This is just sample code.
 	// For actual use, you must support HTTPS by using `ListenAndServeTLS`, a reverse proxy or something else.
-	if err := http.ListenAndServe(":"+os.Getenv("PORT"), nil); err != nil {
+	if err := http.ListenAndServe(":"+appEnv.Port, nil); err != nil {
 		log.Fatal(err)
 	}
 }
 
-func loadEnv() {
-	err := godotenv.Load(".env")
-
+func loadAppEnv() *model.AppEnvironment {
+	appEnv, err := model.NewAppEnvironment()
 	if err != nil {
-		fmt.Printf("読み込み出来ませんでした: %v", err)
+		panic(fmt.Sprintf("環境変数を読み込めませんでした: %v", err))
 	}
+	return appEnv
 }

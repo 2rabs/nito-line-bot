@@ -1,7 +1,6 @@
 package model
 
 import (
-	"fmt"
 	"github.com/line/line-bot-sdk-go/v7/linebot"
 	"github.com/tkchry/nck-trampoline-bot/domain/model/value"
 	"log"
@@ -47,18 +46,18 @@ func (bot NckTrampolineBot) CallbackHandler(w http.ResponseWriter, req *http.Req
 	}
 	for _, event := range events {
 		if event.Type == linebot.EventTypeMessage {
-			switch message := event.Message.(type) {
-			case *linebot.TextMessage:
-				if _, err = bot.client.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(message.Text)).Do(); err != nil {
-					log.Print(err)
-				}
-			case *linebot.StickerMessage:
-				replyMessage := fmt.Sprintf(
-					"sticker id is %s, stickerResourceType is %s", message.StickerID, message.StickerResourceType)
-				if _, err = bot.client.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(replyMessage)).Do(); err != nil {
-					log.Print(err)
-				}
-			}
+			//switch message := event.Message.(type) {
+			//case *linebot.TextMessage:
+			//	if _, err = bot.client.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(message.Text)).Do(); err != nil {
+			//		log.Print(err)
+			//	}
+			//case *linebot.StickerMessage:
+			//	replyMessage := fmt.Sprintf(
+			//		"sticker id is %s, stickerResourceType is %s", message.StickerID, message.StickerResourceType)
+			//	if _, err = bot.client.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(replyMessage)).Do(); err != nil {
+			//		log.Print(err)
+			//	}
+			//}
 		}
 	}
 }

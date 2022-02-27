@@ -15,9 +15,9 @@ func main() {
 		log.Fatal(err)
 	}
 
-	// TODO Delete here
-	bot.PushMessageForNotifyGroupId("起動した！")
-
+	http.HandleFunc("/", func(w http.ResponseWriter, req *http.Request) {
+		_, _ = fmt.Fprintf(w, "Hello, World")
+	})
 	http.HandleFunc("/callback", bot.CallbackHandler)
 
 	if err := http.ListenAndServe(":"+appEnv.Port, nil); err != nil {

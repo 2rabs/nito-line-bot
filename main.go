@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/tkchry/nck-trampoline-bot/domain/model"
+	"github.com/tkchry/nck-trampoline-bot/internal/domain/model"
 	"log"
 	"net/http"
 )

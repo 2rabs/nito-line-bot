@@ -3,7 +3,7 @@ package model
 import (
 	"errors"
 	"github.com/joho/godotenv"
-	"github.com/tkchry/nck-trampoline-bot/domain/model/value"
+	"github.com/tkchry/nck-trampoline-bot/internal/domain/model/value"
 	"os"
 )
 

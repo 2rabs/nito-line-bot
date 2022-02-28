@@ -2,7 +2,7 @@ package model
 
 import (
 	"github.com/line/line-bot-sdk-go/v7/linebot"
-	"github.com/tkchry/nck-trampoline-bot/domain/model/value"
+	"github.com/tkchry/nck-trampoline-bot/internal/domain/model/value"
 	"log"
 	"net/http"
 )

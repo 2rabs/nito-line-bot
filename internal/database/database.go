@@ -3,26 +3,31 @@ package database
 import (
 	"context"
 	"fmt"
-	"github.com/jackc/pgx/v4"
+	"github.com/jackc/pgx/v4/pgxpool"
 	"github.com/tkchry/nck-trampoline-bot/internal/domain/model"
 	"os"
 )
 
-func NewDb(appEnv model.AppEnvironment) {
-	conn, err := pgx.Connect(context.Background(), appEnv.DatabaseUrl)
+func NewDb(appEnv *model.AppEnvironment) {
+	conn, err := pgxpool.Connect(context.Background(), appEnv.DatabaseUrl)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Unable to connect to database: %v\n", err)
 		os.Exit(1)
 	}
-	defer conn.Close(context.Background())
+	defer conn.Close()
 
-	var name string
-	var weight int64
-	err = conn.QueryRow(context.Background(), "select name, weight from widgets where id=$1", 42).Scan(&name, &weight)
+	var memberId int64
+	var nickname string
+	err = conn.QueryRow(
+		context.Background(),
+		"select member_id, nickname from member where member_id=$1",
+		1,
+	).Scan(&memberId, &nickname)
+
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "QueryRow failed: %v\n", err)
 		os.Exit(1)
 	}
 
-	fmt.Println(name, weight)
+	fmt.Println(memberId, nickname)
 }

@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/tkchry/nck-trampoline-bot/internal/db"
 	"github.com/tkchry/nck-trampoline-bot/internal/domain/model"
 	"log"
 	"net/http"
@@ -9,6 +10,9 @@ import (
 
 func main() {
 	appEnv := loadAppEnv()
+
+	db.Init(appEnv)
+	defer db.Close()
 
 	bot, err := model.NewNckTrampolineBot(appEnv)
 	if err != nil {
@@ -20,9 +24,9 @@ func main() {
 	})
 	http.HandleFunc("/callback", bot.CallbackHandler)
 
-	//member := database.NewDb(appEnv)
+	//mem := db.GetMember(member.NewId(1))
 	//bot.PushMessageForNotifyGroupId(
-	//	fmt.Sprintf("MemberId: %d は %s さんです", member.Id.Value, member.Nickname.Value),
+	//	fmt.Sprintf("MemberId: %d は %s さんです", mem.Id.Value, mem.Nickname.Value),
 	//)
 
 	if err := http.ListenAndServe(":"+appEnv.Port, nil); err != nil {

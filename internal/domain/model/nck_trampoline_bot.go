@@ -48,14 +48,8 @@ func (bot NckTrampolineBot) CallbackHandler(w http.ResponseWriter, req *http.Req
 		if event.Type == linebot.EventTypeMessage {
 			//switch message := event.Message.(type) {
 			//case *linebot.TextMessage:
-			//	if _, err = bot.client.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(message.Text)).Do(); err != nil {
-			//		log.Print(err)
-			//	}
-			//case *linebot.StickerMessage:
-			//	replyMessage := fmt.Sprintf(
-			//		"sticker id is %s, stickerResourceType is %s", message.StickerID, message.StickerResourceType)
-			//	if _, err = bot.client.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(replyMessage)).Do(); err != nil {
-			//		log.Print(err)
+			//	for _, mentione := range message.Mention.Mentionees {
+			//		log.Printf("mentioneUserId: %s", mentione.UserID)
 			//	}
 			//}
 		}

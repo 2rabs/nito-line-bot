@@ -20,6 +20,11 @@ func main() {
 	})
 	http.HandleFunc("/callback", bot.CallbackHandler)
 
+	//member := database.NewDb(appEnv)
+	//bot.PushMessageForNotifyGroupId(
+	//	fmt.Sprintf("MemberId: %d は %s さんです", member.Id.Value, member.Nickname.Value),
+	//)
+
 	if err := http.ListenAndServe(":"+appEnv.Port, nil); err != nil {
 		log.Fatal(err)
 	}

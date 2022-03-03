@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+	"github.com/tkchry/nck-trampoline-bot/external/handler/api"
+	"github.com/tkchry/nck-trampoline-bot/external/handler/line"
 	"github.com/tkchry/nck-trampoline-bot/internal/db"
 	"github.com/tkchry/nck-trampoline-bot/internal/domain/model"
 	"log"
@@ -14,7 +16,7 @@ func main() {
 	db.Init(appEnv)
 	defer db.Close()
 
-	bot, err := model.NewNckTrampolineBot(appEnv)
+	err := model.InitBot(appEnv)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -22,12 +24,9 @@ func main() {
 	http.HandleFunc("/", func(w http.ResponseWriter, req *http.Request) {
 		_, _ = fmt.Fprintf(w, "Hello, World")
 	})
-	http.HandleFunc("/callback", bot.CallbackHandler)
-
-	//mem := db.GetMember(member.NewId(1))
-	//bot.PushMessageForNotifyGroupId(
-	//	fmt.Sprintf("MemberId: %d は %s さんです", mem.Id.Value, mem.Nickname.Value),
-	//)
+	http.HandleFunc("/api/message", api.MessageHandler)
+	http.HandleFunc("/api/search-member", api.SearchMemberHandler)
+	http.HandleFunc("/callback", line.CallbackHandler)
 
 	if err := http.ListenAndServe(":"+appEnv.Port, nil); err != nil {
 		log.Fatal(err)

@@ -42,7 +42,7 @@ func Close() {
 	log.Printf("データベースの接続を切断しました")
 }
 
-func GetMember(id *member.Id) *member.Member {
+func GetMember(id member.Id) *member.Member {
 	var memberEntity entity.Member
 	db.First(&memberEntity, id.Value)
 	fmt.Println(memberEntity)

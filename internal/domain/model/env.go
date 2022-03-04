@@ -7,7 +7,7 @@ import (
 	"os"
 )
 
-type AppEnvironment struct {
+type Env struct {
 	Port          string
 	DatabaseUrl   string
 	ChannelSecret string
@@ -15,7 +15,7 @@ type AppEnvironment struct {
 	NotifyGroupId *value.NotifyGroupId
 }
 
-func NewAppEnvironment() (*AppEnvironment, error) {
+func NewEnv() (*Env, error) {
 	// 本番環境では .env を使用しないためエラーは無視
 	_ = godotenv.Load(".env")
 
@@ -44,12 +44,12 @@ func NewAppEnvironment() (*AppEnvironment, error) {
 		return nil, errors.New("NOTIFY_GROUP_ID を読み込めませんでした")
 	}
 
-	appEnvironment := &AppEnvironment{
+	env := &Env{
 		Port:          port,
 		DatabaseUrl:   databaseUrl,
 		ChannelSecret: channelSecret,
 		ChannelToken:  channelToken,
 		NotifyGroupId: value.NewNotifyGroupId(notifyGroupId),
 	}
-	return appEnvironment, nil
+	return env, nil
 }

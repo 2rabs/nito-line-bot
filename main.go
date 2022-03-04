@@ -2,39 +2,44 @@ package main
 
 import (
 	"fmt"
-	"github.com/tkchry/nck-trampoline-bot/external/handler/api"
-	"github.com/tkchry/nck-trampoline-bot/external/handler/line"
-	"github.com/tkchry/nck-trampoline-bot/internal/db"
+	"github.com/tkchry/nck-trampoline-bot/internal/cmdconfig"
+	"github.com/tkchry/nck-trampoline-bot/internal/controller"
 	"github.com/tkchry/nck-trampoline-bot/internal/domain/model"
+	"github.com/tkchry/nck-trampoline-bot/internal/line"
+	"github.com/tkchry/nck-trampoline-bot/internal/worker"
 	"log"
 	"net/http"
 )
 
 func main() {
-	appEnv := loadAppEnv()
+	env := loadAppEnv()
 
-	db.Init(appEnv)
-	defer db.Close()
-
-	err := model.InitBot(appEnv)
+	db, err := cmdconfig.OpenDB(env)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("%v", err)
 	}
 
-	http.HandleFunc("/", func(w http.ResponseWriter, req *http.Request) {
-		_, _ = fmt.Fprintf(w, "Hello, World")
-	})
-	http.HandleFunc("/api/message", api.MessageHandler)
-	http.HandleFunc("/api/search-member", api.SearchMemberHandler)
-	http.HandleFunc("/line/callback", line.CallbackHandler)
+	bot, err := line.NewLineBot(env)
+	if err != nil {
+		log.Fatalf("%v", err)
+	}
 
-	if err := http.ListenAndServe(":"+appEnv.Port, nil); err != nil {
+	server, err := worker.NewServer(env, worker.ServerConfig{
+		DB:  db,
+		Bot: bot,
+	})
+
+	router := controller.NewRouter()
+
+	server.Install(env, router)
+
+	if err := http.ListenAndServe(":"+env.Port, nil); err != nil {
 		log.Fatal(err)
 	}
 }
 
-func loadAppEnv() *model.AppEnvironment {
-	appEnv, err := model.NewAppEnvironment()
+func loadAppEnv() *model.Env {
+	appEnv, err := model.NewEnv()
 	if err != nil {
 		panic(fmt.Sprintf("環境変数を読み込めませんでした: %v", err))
 	}

@@ -1,13 +1,23 @@
-package line
+package controller
 
 import (
 	"github.com/line/line-bot-sdk-go/v7/linebot"
-	"github.com/tkchry/nck-trampoline-bot/internal/domain/model"
+	"github.com/tkchry/nck-trampoline-bot/internal/line"
 	"net/http"
 )
 
-func CallbackHandler(w http.ResponseWriter, req *http.Request) {
-	events, err := model.GetBot().Client.ParseRequest(req)
+type LineController struct {
+	bot *line.Bot
+}
+
+func NewLineController(bot *line.Bot) *LineController {
+	return &LineController{
+		bot: bot,
+	}
+}
+
+func (c LineController) CallbackHandler(w http.ResponseWriter, req *http.Request) {
+	events, err := c.bot.Client.ParseRequest(req)
 	if err != nil {
 		if err == linebot.ErrInvalidSignature {
 			w.WriteHeader(400)

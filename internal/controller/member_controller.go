@@ -1,16 +1,32 @@
-package api
+package controller
 
 import (
 	"encoding/json"
 	"fmt"
 	"github.com/tkchry/nck-trampoline-bot/internal/api/request"
-	"github.com/tkchry/nck-trampoline-bot/internal/db"
-	"github.com/tkchry/nck-trampoline-bot/internal/domain/model"
+	"github.com/tkchry/nck-trampoline-bot/internal/database"
 	"github.com/tkchry/nck-trampoline-bot/internal/domain/model/member"
+	"github.com/tkchry/nck-trampoline-bot/internal/line"
+	"gorm.io/gorm"
 	"net/http"
 )
 
-func MessageHandler(w http.ResponseWriter, req *http.Request) {
+type MemberController struct {
+	db  *gorm.DB
+	bot *line.Bot
+}
+
+func NewMemberController(
+	db *gorm.DB,
+	bot *line.Bot,
+) *MemberController {
+	return &MemberController{
+		db:  db,
+		bot: bot,
+	}
+}
+
+func (c MemberController) MessageHandler(w http.ResponseWriter, req *http.Request) {
 	if method := req.Method; method != "POST" {
 		return
 	}
@@ -20,13 +36,12 @@ func MessageHandler(w http.ResponseWriter, req *http.Request) {
 	var messageRequest request.MessageRequest
 	json.Unmarshal(body, &messageRequest)
 
-	bot := model.GetBot()
-	bot.PushMessageForNotifyGroupId(messageRequest.Message)
+	c.bot.PushMessageForNotifyGroupId(messageRequest.Message)
 
 	w.WriteHeader(200)
 }
 
-func SearchMemberHandler(w http.ResponseWriter, req *http.Request) {
+func (c MemberController) SearchMemberHandler(w http.ResponseWriter, req *http.Request) {
 	if method := req.Method; method != "POST" {
 		return
 	}
@@ -37,7 +52,7 @@ func SearchMemberHandler(w http.ResponseWriter, req *http.Request) {
 	json.Unmarshal(body, &searchMemberRequest)
 
 	searchMemberId := member.NewId(searchMemberRequest.MemberId)
-	mem := db.GetMember(searchMemberId)
+	mem := database.GetMember(c.db, searchMemberId)
 
 	var content string
 	if mem.IsEmpty() {
@@ -46,8 +61,7 @@ func SearchMemberHandler(w http.ResponseWriter, req *http.Request) {
 		content = fmt.Sprintf("MemberId: %d は %s さんです", mem.Id.Value, mem.Nickname.Value)
 	}
 
-	bot := model.GetBot()
-	bot.PushMessageForNotifyGroupId(content)
+	c.bot.PushMessageForNotifyGroupId(content)
 
 	w.WriteHeader(200)
 }

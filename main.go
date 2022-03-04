@@ -26,7 +26,7 @@ func main() {
 	})
 	http.HandleFunc("/api/message", api.MessageHandler)
 	http.HandleFunc("/api/search-member", api.SearchMemberHandler)
-	http.HandleFunc("/callback", line.CallbackHandler)
+	http.HandleFunc("/line/callback", line.CallbackHandler)
 
 	if err := http.ListenAndServe(":"+appEnv.Port, nil); err != nil {
 		log.Fatal(err)

@@ -2,11 +2,11 @@ package main
 
 import (
 	"fmt"
-	"github.com/tkchry/nck-trampoline-bot/internal/cmdconfig"
-	"github.com/tkchry/nck-trampoline-bot/internal/controller"
-	"github.com/tkchry/nck-trampoline-bot/internal/domain/model"
-	"github.com/tkchry/nck-trampoline-bot/internal/line"
-	"github.com/tkchry/nck-trampoline-bot/internal/worker"
+	"github.com/2rabs/nito-line-bot/internal/cmdconfig"
+	"github.com/2rabs/nito-line-bot/internal/controller"
+	"github.com/2rabs/nito-line-bot/internal/domain/model"
+	"github.com/2rabs/nito-line-bot/internal/line"
+	"github.com/2rabs/nito-line-bot/internal/worker"
 	"log"
 	"net/http"
 )

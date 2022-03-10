@@ -1,4 +1,4 @@
-module github.com/tkchry/nck-trampoline-bot
+module github.com/2rabs/nito-line-bot
 
 // +heroku goVersion go1.17
 go 1.17

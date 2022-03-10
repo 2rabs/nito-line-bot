@@ -1,7 +1,7 @@
 package cmdconfig
 
 import (
-	"github.com/tkchry/nck-trampoline-bot/internal/domain/model"
+	"github.com/2rabs/nito-line-bot/internal/domain/model"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"log"

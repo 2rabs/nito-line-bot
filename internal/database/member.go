@@ -2,8 +2,8 @@ package database
 
 import (
 	"fmt"
-	"github.com/tkchry/nck-trampoline-bot/internal/database/entity"
-	"github.com/tkchry/nck-trampoline-bot/internal/domain/model/member"
+	"github.com/2rabs/nito-line-bot/internal/database/entity"
+	"github.com/2rabs/nito-line-bot/internal/domain/model/member"
 	"gorm.io/gorm"
 )
 

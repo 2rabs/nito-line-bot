@@ -1,7 +1,7 @@
 package entity
 
 import (
-	"github.com/tkchry/nck-trampoline-bot/internal/domain/model/member"
+	"github.com/2rabs/nito-line-bot/internal/domain/model/member"
 	"gorm.io/gorm"
 	"time"
 )

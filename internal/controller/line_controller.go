@@ -1,8 +1,8 @@
 package controller
 
 import (
+	"github.com/2rabs/nito-line-bot/internal/line"
 	"github.com/line/line-bot-sdk-go/v7/linebot"
-	"github.com/tkchry/nck-trampoline-bot/internal/line"
 	"net/http"
 )
 

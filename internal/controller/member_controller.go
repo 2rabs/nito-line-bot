@@ -3,10 +3,10 @@ package controller
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/tkchry/nck-trampoline-bot/internal/api/request"
-	"github.com/tkchry/nck-trampoline-bot/internal/database"
-	"github.com/tkchry/nck-trampoline-bot/internal/domain/model/member"
-	"github.com/tkchry/nck-trampoline-bot/internal/line"
+	"github.com/2rabs/nito-line-bot/internal/api/request"
+	"github.com/2rabs/nito-line-bot/internal/database"
+	"github.com/2rabs/nito-line-bot/internal/domain/model/member"
+	"github.com/2rabs/nito-line-bot/internal/line"
 	"gorm.io/gorm"
 	"net/http"
 )

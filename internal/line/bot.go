@@ -8,8 +8,9 @@ import (
 )
 
 type Bot struct {
-	Client        *linebot.Client
-	notifyGroupId *value.NotifyGroupId
+	Client            *linebot.Client
+	notifyGroupId     *value.NotifyGroupId
+	tempNotifyGroupId *value.NotifyGroupId
 }
 
 func NewLineBot(appEnvironment *model.Env) (_ *Bot, err error) {
@@ -22,14 +23,21 @@ func NewLineBot(appEnvironment *model.Env) (_ *Bot, err error) {
 	}
 
 	bot := &Bot{
-		Client:        client,
-		notifyGroupId: appEnvironment.NotifyGroupId,
+		Client:            client,
+		notifyGroupId:     appEnvironment.NotifyGroupId,
+		tempNotifyGroupId: appEnvironment.TempNotifyGroupId,
 	}
 	return bot, nil
 }
 
 func (bot Bot) PushMessageForNotifyGroupId(content string) {
 	if _, err := bot.Client.PushMessage(bot.notifyGroupId.Value, linebot.NewTextMessage(content)).Do(); err != nil {
+		log.Print(err)
+	}
+}
+
+func (bot Bot) PushMessageForTempNotifyGroupId(content string) {
+	if _, err := bot.Client.PushMessage(bot.tempNotifyGroupId.Value, linebot.NewTextMessage(content)).Do(); err != nil {
 		log.Print(err)
 	}
 }

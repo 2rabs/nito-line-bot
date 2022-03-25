@@ -8,11 +8,12 @@ import (
 )
 
 type Env struct {
-	Port          string
-	DatabaseUrl   string
-	ChannelSecret string
-	ChannelToken  string
-	NotifyGroupId *value.NotifyGroupId
+	Port              string
+	DatabaseUrl       string
+	ChannelSecret     string
+	ChannelToken      string
+	NotifyGroupId     *value.NotifyGroupId
+	TempNotifyGroupId *value.NotifyGroupId
 }
 
 func NewEnv() (*Env, error) {
@@ -44,12 +45,18 @@ func NewEnv() (*Env, error) {
 		return nil, errors.New("NOTIFY_GROUP_ID を読み込めませんでした")
 	}
 
+	tempNotifyGroupId, ok := os.LookupEnv("TEMP_NOTIFY_GROUP_ID")
+	if !ok {
+		return nil, errors.New("TEMP_NOTIFY_GROUP_ID を読み込めませんでした")
+	}
+
 	env := &Env{
-		Port:          port,
-		DatabaseUrl:   databaseUrl,
-		ChannelSecret: channelSecret,
-		ChannelToken:  channelToken,
-		NotifyGroupId: value.NewNotifyGroupId(notifyGroupId),
+		Port:              port,
+		DatabaseUrl:       databaseUrl,
+		ChannelSecret:     channelSecret,
+		ChannelToken:      channelToken,
+		NotifyGroupId:     value.NewNotifyGroupId(notifyGroupId),
+		TempNotifyGroupId: value.NewNotifyGroupId(tempNotifyGroupId),
 	}
 	return env, nil
 }

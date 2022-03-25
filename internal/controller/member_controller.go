@@ -41,6 +41,21 @@ func (c MemberController) MessageHandler(w http.ResponseWriter, req *http.Reques
 	w.WriteHeader(200)
 }
 
+func (c MemberController) TempMessageHandler(w http.ResponseWriter, req *http.Request) {
+	if method := req.Method; method != "POST" {
+		return
+	}
+
+	body := make([]byte, req.ContentLength)
+	req.Body.Read(body)
+	var messageRequest request.MessageRequest
+	json.Unmarshal(body, &messageRequest)
+
+	c.bot.PushMessageForTempNotifyGroupId(messageRequest.Message)
+
+	w.WriteHeader(200)
+}
+
 func (c MemberController) SearchMemberHandler(w http.ResponseWriter, req *http.Request) {
 	if method := req.Method; method != "POST" {
 		return

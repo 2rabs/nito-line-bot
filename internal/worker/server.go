@@ -43,6 +43,7 @@ func (s Server) Install(
 	// FIXME: 仮置き
 	memberController := controller.NewMemberController(s.db, s.bot)
 	router.HandleFunc("/api/message", memberController.MessageHandler)
+	router.HandleFunc("/api/temp-message", memberController.TempMessageHandler)
 	router.HandleFunc("/api/search-member", memberController.SearchMemberHandler)
 
 	// Line のコールバック
